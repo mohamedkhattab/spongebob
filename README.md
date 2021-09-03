@@ -9,3 +9,4 @@
 6. change the name of the downloaded file to be the same as the spongebobified text
 7. add new project button which resets all configs
 8. use a custom spongebob
+9. create a spongebobify API
