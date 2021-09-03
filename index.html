@@ -165,6 +165,24 @@
       } while (text.height + top > CANVAS_HEIGHT);
     }
 
+    function putSomeFuckingWords(words, adjust) {
+      text.set('text', '');
+      for (const word of words) {
+        const current = text.get('text');
+        text.set('text', current + ' ' + word);
+        if (text.width > CANVAS_WIDTH) {
+          text.set('text', current + '\n' + word);
+        }
+        if (adjust) {
+          adjustFontSize();
+        }
+        adjustTextTop();
+        if (adjust) {
+          setStrokeWidth();
+        }
+      }
+    }
+
     /**
      * makes the `strokeWidth` 1 instead of 2 when the stroke starts to 
      * make text unreadable which in the current config happens at
@@ -182,19 +200,11 @@
       setTimeout(() => {
         let res = getSpongebobCase(s.value);
 
-        text.set('text', '');
         const words = res.split(' ');
-        for (const word of words) {
-          const current = text.get('text');
-          text.set('text', current + ' ' + word);
-          if (text.width > CANVAS_WIDTH) {
-            text.set('text', current + '\n' + word);
-          }
-        }
-        // text.set('text', res);
-        adjustFontSize();
-        adjustTextTop();
-        setStrokeWidth();
+        
+        putSomeFuckingWords(words, true);
+        putSomeFuckingWords(words, false);
+        
         canvas.renderAll();
       }, 0);
     }
