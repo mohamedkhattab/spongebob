@@ -153,7 +153,7 @@
       do {
         text.set('fontSize', fontSize);
         fontSize--;
-      } while (text.width > CANVAS_WIDTH);
+      } while (text.width > CANVAS_WIDTH || text.height > CANVAS_HEIGHT / 2);
     }
 
     function adjustTextTop() {
@@ -181,7 +181,17 @@
     function changeTextToSpongeBobCase() {
       setTimeout(() => {
         let res = getSpongebobCase(s.value);
-        text.set('text', res);
+
+        text.set('text', '');
+        const words = res.split(' ');
+        for (const word of words) {
+          const current = text.get('text');
+          text.set('text', current + ' ' + word);
+          if (text.width > CANVAS_WIDTH) {
+            text.set('text', current + '\n' + word);
+          }
+        }
+        // text.set('text', res);
         adjustFontSize();
         adjustTextTop();
         setStrokeWidth();
