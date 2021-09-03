@@ -1,45 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>sPonGebOb</title>
 </head>
+
 <body>
   <input type="text" name="" id="spongebob" placeholder="type your text here...">
   <button id="submit">Spongebobify</button>
-  <h1 id="display">asdasdas</h1>
-  <img id="image" src="./mockingspongebobbb.jpg" alt="mocking spongebob" style="display: none;">
+  <h1 id="display">...</h1>
+  <img id="image" src="./ms.jpg" alt="mocking spongebob" style="display: none;">
 
-  <canvas id="canvas" width="1000" height="500" style="border:1px solid #000000;">
+  <canvas id="canvas" width="502" height="353" style="border:1px solid #000000;"></canvas>
+  <a id="download_image">Save Image</a>
   <script src="./fabric.min.js"></script>
   <script>
-    
-    // Create a new instance of Canvas
-    var canvas = new fabric.Canvas("canvas");
- 
-    // Create a new Text instance
-    var text = new fabric.Text('GeeksforGeeks', {
-        fill: 'green',
-        left: 300,
-        top: 0,
-    });
+    const CANVAS_WIDTH = 502;
+    const CANVAS_HEIGHT = 353;
+    const MIN_STOKE_FONT_SIZE = 23;
+    const canvas = new fabric.Canvas("canvas");
+    const img = document.querySelector("#image");
+    const downloadButton = document.querySelector('#download_image');
 
-    var imgInstance = new fabric.Image(document.querySelector("#image"), {
+    const text = new fabric.Text('', {
+      fill: 'white',
+      fontFamily: 'cursive',
+      stroke: 'black',
+      strokeWidth: 2,
+      fontWeight: 'bold',
+      left: 251,
+      top: 300,
+      originX: 'center',
+      fixedWidth: 200,
+      selectable: false,
+    });
+    const imgInstance = new fabric.Image(img, {
       left: 0,
       top: 0,
+      selectable: false,
     });
 
     canvas.add(imgInstance);
     canvas.add(text);
-    
+    img.addEventListener('load', () => {
+      canvas.renderAll();
+    });
+
     const s = document.querySelector("#spongebob");
     const display = document.querySelector("#display");
     const submit = document.querySelector("#submit");
+
     function spongebobTheCase(char) {
       return (Math.random() * 100) >= 50 ? char.toUpperCase() : char.toLowerCase();
     }
+
     function getSpongebobCase(value) {
       let result = "";
       for (let i = 0; i < value.length; i++) {
@@ -48,23 +65,67 @@
       return result;
     }
 
-    s.addEventListener('keydown', (event) => {
+    function adjustFontSize() {
+      let fontSize = 100;
+
+      do {
+        text.set('fontSize', fontSize);
+        fontSize--;
+      } while (text.width > CANVAS_WIDTH);
+    }
+
+    function adjustTextTop() {
+      let top = 353;
+
+      do {
+        text.set('top', top);
+        top--;
+      } while (text.height + top > CANVAS_HEIGHT);
+    }
+
+    function setStrokeWidth() {
+      if (text.fontSize > MIN_STOKE_FONT_SIZE) {
+        text.set('strokeWidth', 2);
+      } else {
+        text.set('strokeWidth', 1);
+      }
+    }
+
+    function changeTextToSpongeBobCase() {
       setTimeout(() => {
-        display.innerText = getSpongebobCase(event.target.value);
+        const res = getSpongebobCase(s.value);
+        display.innerText = res || '...';
+        text.set('text', res);
+        adjustFontSize();
+        adjustTextTop();
+        setStrokeWidth();
+        canvas.renderAll();
       }, 0);
+    }
+
+    s.addEventListener('keydown', () => {
+      changeTextToSpongeBobCase();
     });
 
-    submit.addEventListener('click', (event) => {
-      setTimeout(() => {
-        display.innerText = getSpongebobCase(s.value);
-      }, 0);
+    submit.addEventListener('click', () => {
+      changeTextToSpongeBobCase();
     });
 
-    s.addEventListener('paste', (event) => {
-      setTimeout(() => {
-        display.innerText = getSpongebobCase(event.target.value);
-      }, 0);
+    s.addEventListener('paste', () => {
+      changeTextToSpongeBobCase();
     });
+
+    function saveImage(e) {
+      this.href = canvas.toDataURL({
+        format: 'png',
+        quality: 1
+      });
+
+      this.download = 'canvas.png'
+    }
+
+    downloadButton.addEventListener('click', saveImage, false);
   </script>
 </body>
+
 </html>
