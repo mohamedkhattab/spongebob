@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sPonGebOb</title>
+</head>
+<body>
+  <input type="text" name="" id="spongebob" placeholder="type your text here...">
+  <button id="submit">Spongebobify</button>
+  <h1 id="display">asdasdas</h1>
+
+  <script>
+    const s = document.querySelector("#spongebob");
+    const display = document.querySelector("#display");
+    const submit = document.querySelector("#submit");
+    function spongebobTheCase(char) {
+      return (Math.random() * 100) >= 50 ? char.toUpperCase() : char.toLowerCase();
+    }
+    function getSpongebobCase(value) {
+      let result = "";
+      for (let i = 0; i < value.length; i++) {
+        result += spongebobTheCase(value[i]);
+      }
+      return result;
+    }
+
+    s.addEventListener('keydown', (event) => {
+      setTimeout(() => {
+        display.innerText = getSpongebobCase(event.target.value);
+      }, 0);
+    });
+
+    submit.addEventListener('click', (event) => {
+      setTimeout(() => {
+        display.innerText = getSpongebobCase(s.value);
+      }, 0);
+    });
+
+    s.addEventListener('paste', (event) => {
+      setTimeout(() => {
+        display.innerText = getSpongebobCase(event.target.value);
+      }, 0);
+    });
+  </script>
+</body>
+</html>
