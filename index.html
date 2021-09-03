@@ -120,17 +120,24 @@
       selectable: false,
     });
 
-    const imgInstance = new fabric.Image(img, {
-      left: 0,
-      top: 0,
-      selectable: false,
+    createImageInstance();
+
+    canvas.add(text);
+
+    img.addEventListener('load', () => {
+      createImageInstance();
+      text.bringToFront();
     });
 
-    canvas.add(imgInstance);
-    canvas.add(text);
-    img.addEventListener('load', () => {
-      canvas.renderAll();
-    });
+    function createImageInstance() {
+      const imageInstance = new fabric.Image(img, {
+        left: 0,
+        top: 0,
+        selectable: false,
+      });
+
+      canvas.add(imageInstance);
+    }
 
     const s = document.querySelector(".spongebob");
     const spongebobify = document.querySelector(".spongebobify");
