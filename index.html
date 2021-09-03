@@ -75,7 +75,7 @@
     }
 
     function adjustTextTop() {
-      let top = 353;
+      let top = CANVAS_HEIGHT;
 
       do {
         text.set('top', top);
@@ -83,6 +83,11 @@
       } while (text.height + top > CANVAS_HEIGHT);
     }
 
+    /**
+     * makes the `strokeWidth` 1 instead of 2 when the stroke starts to 
+     * make text unreadable which in the current config happens at
+     * `MIN_STOKE_FONT_SIZE`
+     * */
     function setStrokeWidth() {
       if (text.fontSize > MIN_STOKE_FONT_SIZE) {
         text.set('strokeWidth', 2);
@@ -93,7 +98,7 @@
 
     function changeTextToSpongeBobCase() {
       setTimeout(() => {
-        const res = getSpongebobCase(s.value);
+        let res = getSpongebobCase(s.value);
         display.innerText = res || '...';
         text.set('text', res);
         adjustFontSize();
