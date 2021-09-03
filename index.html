@@ -10,8 +10,30 @@
   <input type="text" name="" id="spongebob" placeholder="type your text here...">
   <button id="submit">Spongebobify</button>
   <h1 id="display">asdasdas</h1>
+  <img id="image" src="./mockingspongebobbb.jpg" alt="mocking spongebob" style="display: none;">
 
+  <canvas id="canvas" width="1000" height="500" style="border:1px solid #000000;">
+  <script src="./fabric.min.js"></script>
   <script>
+    
+    // Create a new instance of Canvas
+    var canvas = new fabric.Canvas("canvas");
+ 
+    // Create a new Text instance
+    var text = new fabric.Text('GeeksforGeeks', {
+        fill: 'green',
+        left: 300,
+        top: 0,
+    });
+
+    var imgInstance = new fabric.Image(document.querySelector("#image"), {
+      left: 0,
+      top: 0,
+    });
+
+    canvas.add(imgInstance);
+    canvas.add(text);
+    
     const s = document.querySelector("#spongebob");
     const display = document.querySelector("#display");
     const submit = document.querySelector("#submit");
